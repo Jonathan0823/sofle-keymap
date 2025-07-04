@@ -51,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_QWERTY] = LAYOUT(
   KC_GRV,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_MINS,
   KC_ESC,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_BSPC,
-  KC_TAB,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L, KC,  KC_QUOT,
+  KC_TAB,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,  KC_QUOT,
   KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_MUTE,     KC_MPLY,KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
                  KC_LGUI,KC_LALT,KC_LCTL, TL_LOWR, KC_ENT,      KC_SPC,  TL_UPPR, KC_RCTL, KC_RALT, KC_RGUI
 ),
@@ -368,22 +368,29 @@ bool oled_task_user(void) {
 #endif
 
 
+static uint8_t right_encoder_count = 0;
+
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
-        if (clockwise) { // Left encoder
-            tap_code(KC_VOLD); // Volume down
-        } else {
-            tap_code(KC_VOLU); // Volume up
-        }
-    } else if (index == 1) { // Right encoder
         if (clockwise) {
-            tap_code(KC_MNXT); // Next track
+            tap_code(KC_VOLD);
         } else {
-            tap_code(KC_MPRV); // Prev track
+            tap_code(KC_VOLU);
+        }
+    } else if (index == 1) {
+        right_encoder_count++;
+        if (right_encoder_count >= 4) {  // Ganti jadi 3 kalau masih terlalu sensitif
+            if (clockwise) {
+                tap_code(KC_MNXT);
+            } else {
+                tap_code(KC_MPRV);
+            }
+            right_encoder_count = 0;
         }
     }
     return false;
 }
+
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
