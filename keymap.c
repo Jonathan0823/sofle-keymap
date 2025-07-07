@@ -373,7 +373,7 @@ static uint8_t left_encoder_count = 0;
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
-      if (left_encoder_count >= 3) {
+      if (left_encoder_count >= 4) {
         left_encoder_count++;
         if (clockwise) {
             tap_code(KC_VOLD);
