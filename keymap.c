@@ -373,7 +373,7 @@ static uint8_t left_encoder_count = 0;
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
-      if (left_encoder_count >= 4) {  // Ganti jadi 3 kalau masih terlalu sensitif
+      if (left_encoder_count >= 3) {
         left_encoder_count++;
         if (clockwise) {
             tap_code(KC_VOLD);
@@ -384,7 +384,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
       } 
     } else if (index == 1) {
         right_encoder_count++;
-        if (right_encoder_count >= 4) {  // Ganti jadi 3 kalau masih terlalu sensitif
+        if (right_encoder_count >= 4) { 
             if (clockwise) {
                 tap_code(KC_MPRV);
             } else {
